@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.java.train.domain.Member;
 import com.java.train.domain.MemberExample;
 import com.java.train.mapper.MemberMapper;
+import com.java.train.req.MemberRegisterReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,11 @@ public class MemberService {
 
     /**
      * 用户注册
-     * @param mobile
+     * @param req
      * @return
      */
-    public long register(String mobile) {
+    public long register(MemberRegisterReq req) {
+        String mobile = req.getMobile();
         MemberExample memberExample = new MemberExample();
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> list = memberMapper.selectByExample(memberExample);
@@ -34,6 +36,7 @@ public class MemberService {
         Member member = new Member();
         member.setId(System.currentTimeMillis());
         member.setMobile(mobile);
-        return memberMapper.insert(member);
+        memberMapper.insert(member);
+        return member.getId();
     }
 }
