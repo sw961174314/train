@@ -9,4 +9,8 @@ public class MemberService {
 
     @Autowired
     private MemberMapper memberMapper;
+
+    public int count() {
+        return Math.toIntExact(memberMapper.countByExample(null));
+    }
 }
