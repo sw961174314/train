@@ -3,6 +3,8 @@ package com.java.train.service;
 import cn.hutool.core.collection.CollUtil;
 import com.java.train.domain.Member;
 import com.java.train.domain.MemberExample;
+import com.java.train.exception.BusinessException;
+import com.java.train.exception.BusinessExceptionEnum;
 import com.java.train.mapper.MemberMapper;
 import com.java.train.req.MemberRegisterReq;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,9 @@ public class MemberService {
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> list = memberMapper.selectByExample(memberExample);
         if (CollUtil.isNotEmpty(list)) {
-            throw new RuntimeException("手机号已注册");
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_EXIST);
         }
+
         Member member = new Member();
         member.setId(System.currentTimeMillis());
         member.setMobile(mobile);
