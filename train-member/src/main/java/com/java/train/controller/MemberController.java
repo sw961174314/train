@@ -1,7 +1,10 @@
 package com.java.train.controller;
 
+import com.java.train.req.MemberLoginReq;
 import com.java.train.req.MemberRegisterReq;
+import com.java.train.req.MemberSendCodeReq;
 import com.java.train.resp.CommonResp;
+import com.java.train.resp.MemberLoginResp;
 import com.java.train.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +35,27 @@ public class MemberController {
     public CommonResp<Long> register(@Valid MemberRegisterReq req) {
         long register = memberService.register(req);
         return new CommonResp<>(register);
+    }
+
+    /**
+     * 验证码发送接口
+     * @param req
+     * @return
+     */
+    @PostMapping("/sendCode")
+    public CommonResp sendCode(@Valid MemberSendCodeReq req) {
+        memberService.sendCode(req);
+        return new CommonResp<>();
+    }
+
+    /**
+     * 登录接口
+     * @param req
+     * @return
+     */
+    @PostMapping("/login")
+    public CommonResp<MemberLoginResp> login(@Valid MemberLoginReq req) {
+        MemberLoginResp resp = memberService.login(req);
+        return new CommonResp<>(resp);
     }
 }
