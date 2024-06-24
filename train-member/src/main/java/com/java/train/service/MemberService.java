@@ -1,12 +1,14 @@
 package com.java.train.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import com.java.train.domain.Member;
 import com.java.train.domain.MemberExample;
 import com.java.train.exception.BusinessException;
 import com.java.train.exception.BusinessExceptionEnum;
 import com.java.train.mapper.MemberMapper;
 import com.java.train.req.MemberRegisterReq;
+import com.java.train.util.SnowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,7 @@ public class MemberService {
         }
 
         Member member = new Member();
-        member.setId(System.currentTimeMillis());
+        member.setId(SnowUtil.getSnowflakeNextId());
         member.setMobile(mobile);
         memberMapper.insert(member);
         return member.getId();
