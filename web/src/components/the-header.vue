@@ -6,7 +6,7 @@
       </router-link>
     </div>
     <div style="float: right; color: white;">
-      您好： &nbsp;&nbsp;
+      您好： {{member.mobile}} &nbsp;&nbsp;
       <router-link to="/login" style="color: white;">
         退出登录
       </router-link>
@@ -38,13 +38,13 @@
 
 <script>
 import {defineComponent} from 'vue';
-// import store from "@/store";
+import store from "@/store";
 // import router from '@/router'
 
 export default defineComponent({
   name: "the-header-view",
   setup() {
-    // let member = store.state.member;
+    let member = store.state.member;
     // const selectedKeys = ref([]);
 
     // watch(() => router.currentRoute.value.path, (newValue) => {
@@ -52,15 +52,14 @@ export default defineComponent({
     //   selectedKeys.value = [];
     //   selectedKeys.value.push(newValue);
     // }, {immediate: true});
-    // return {
-    //   member,
-    //   selectedKeys
-    // };
+    return {
+      member
+      // selectedKeys
+    };
   },
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .logo {
   float: left;
