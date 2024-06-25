@@ -1,15 +1,18 @@
 import { createStore } from 'vuex'
 
+const  MEMBER = "MEMBER";
+
 export default createStore({
   state: {
-    member: {}
+    member: window.SessionStorage.get(MEMBER) || {}
   },
   getters: {
   },
   mutations: {
     setMember(state, member) {
       // 赋值给state的member
-      state.member = member
+      state.member = member;
+      window.SessionStorage.set(MEMBER, member);
     },
   },
   actions: {
