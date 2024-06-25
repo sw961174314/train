@@ -1,4 +1,4 @@
-package com.java.train;
+package com.java.train.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
