@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.jwt.JWTUtil;
 import com.java.train.domain.Member;
 import com.java.train.domain.MemberExample;
 import com.java.train.exception.BusinessException;
@@ -13,6 +14,7 @@ import com.java.train.req.MemberLoginReq;
 import com.java.train.req.MemberRegisterReq;
 import com.java.train.req.MemberSendCodeReq;
 import com.java.train.resp.MemberLoginResp;
+import com.java.train.util.JwtUtil;
 import com.java.train.util.SnowUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MemberService {
@@ -101,8 +104,11 @@ public class MemberService {
         if (!"8888".equals(code)) {
             throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_CODE_EXIST);
         }
-
-        return BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
+        MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
+        // 生成token
+        String token = JwtUtil.createToken(memberLoginResp.getId(), memberLoginResp.getMobile());
+        memberLoginResp.setToken(token);
+        return memberLoginResp;
     }
 
     private Member selectByMobile(String mobile) {
