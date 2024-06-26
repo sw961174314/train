@@ -3,8 +3,11 @@ package com.java.train.mapper;
 import com.java.train.domain.Passenger;
 import com.java.train.domain.PassengerExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface PassengerMapper {
     long countByExample(PassengerExample example);
 
