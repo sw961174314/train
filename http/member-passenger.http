@@ -10,12 +10,8 @@ token: {{token}}
 
 ###
 
-GET http://localhost:8001/member/passenger/queryList
+GET http://localhost:8001/member/passenger/queryList?page=1&size=2
 Content-Type: application/json
 token: {{token}}
-
-{
-
-}
 
 ###

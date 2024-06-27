@@ -4,6 +4,7 @@ import com.java.train.context.LoginMemberContext;
 import com.java.train.req.PassengerQueryReq;
 import com.java.train.req.PassengerSaveReq;
 import com.java.train.resp.CommonResp;
+import com.java.train.resp.PageResp;
 import com.java.train.resp.PassengerQueryResp;
 import com.java.train.service.PassengerService;
 import jakarta.validation.Valid;
@@ -36,10 +37,10 @@ public class PassengerController {
      * @return
      */
     @GetMapping("/queryList")
-    public CommonResp<List<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req) {
+    public CommonResp<PageResp<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req) {
         // 从本地线程中获取会员ID
         req.setMemberId(LoginMemberContext.getId());
-        List<PassengerQueryResp> list = passengerService.queryList(req);
+        PageResp<PassengerQueryResp> list = passengerService.queryList(req);
         return new CommonResp<>(list);
     }
 }
