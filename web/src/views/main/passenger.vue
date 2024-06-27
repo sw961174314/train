@@ -79,11 +79,11 @@ export default defineComponent({
     });
     let loading = ref(false);
     const columns = [
-    {
-      title: '会员id',
-      dataIndex: 'memberId',
-      key: 'memberId',
-    },
+    // {
+    //   title: '会员id1',
+    //   dataIndex: 'memberId',
+    //   key: 'memberId',
+    // },
     {
       title: '姓名',
       dataIndex: 'name',
