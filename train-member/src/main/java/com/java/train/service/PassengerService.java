@@ -76,4 +76,12 @@ public class PassengerService {
         pageResp.setList(list);
         return pageResp;
     }
+
+    /**
+     * 乘客人删除
+     * @param id
+     */
+    public void delete(Long id) {
+        passengerMapper.deleteByPrimaryKey(id);
+    }
 }
