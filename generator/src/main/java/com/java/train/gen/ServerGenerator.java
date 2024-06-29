@@ -19,9 +19,9 @@ public class ServerGenerator {
     static String serverPath = "train-[module]/src/main/java/com/java/train/";
     static String pomPath = "generator/pom.xml";
     static String module = "";
-    static {
-        new File(serverPath).mkdirs();
-    }
+//    static {
+//        new File(serverPath).mkdirs();
+//    }
 
     public static void main(String[] args) throws Exception {
         // 获取mybatis-generator

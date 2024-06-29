@@ -51,10 +51,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.java</groupId>
+            <groupId>com.java.train</groupId>
             <artifactId>train-member</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -67,7 +66,7 @@
                 <version>1.4.0</version>
                 <configuration>
                     <!--<configurationFile>src/main/resources/generator-config-member.xml</configurationFile>-->
-                    <configurationFile>src/main/resources/generator-config-member.xml</configurationFile>
+                    <configurationFile>src/main/resources/generator-config-business.xml</configurationFile>
                     <!--<configurationFile>src/main/resources/generator-config-batch.xml</configurationFile>-->
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
