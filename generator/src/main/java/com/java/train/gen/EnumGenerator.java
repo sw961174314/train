@@ -23,7 +23,7 @@ public class EnumGenerator {
         try {
             toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
             toJson(TrainTypeEnum.class, bufferObject, bufferArray);
-//            toJson(SeatTypeEnum.class, bufferObject, bufferArray);
+//            toJson(SeatTypeEnum.clasgens, bufferObject, bufferArray);
 //            toJson(SeatColEnum.class, bufferObject, bufferArray);
 //            toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);
 

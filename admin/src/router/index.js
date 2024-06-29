@@ -19,6 +19,9 @@ const routes = [
     },{
       path: 'train',
       component: () => import('../views/main/business/train')
+    },{
+      path: 'train-station',
+      component: () => import('../views/main/business/train-station')
     }]
   },
   {
