@@ -1,8 +1,8 @@
 package com.java.train.controller.admin;
 
-import com.java.train.common.context.LoginMemberContext;
-import com.java.train.common.resp.CommonResp;
-import com.java.train.common.resp.PageResp;
+import com.java.train.context.LoginMemberContext;
+import com.java.train.resp.CommonResp;
+import com.java.train.resp.PageResp;
 import com.java.train.req.${Domain}QueryReq;
 import com.java.train.req.${Domain}SaveReq;
 import com.java.train.resp.${Domain}QueryResp;
