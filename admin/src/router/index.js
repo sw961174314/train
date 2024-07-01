@@ -22,6 +22,12 @@ const routes = [
     },{
       path: 'train-station',
       component: () => import('../views/main/business/train-station')
+    },{
+      path: 'train-carriage',
+      component: () => import('../views/main/business/train-carriage')
+    },{
+      path: 'train-seat',
+      component: () => import('../views/main/business/train-seat')
     }]
   },
   {
