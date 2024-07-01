@@ -2,7 +2,7 @@
   <p>
     <a-space>
       <a-button type="primary" @click="handleQuery()">刷新</a-button>
-      <#if !readOnly><a-button type="primary" @click="onAdd">新增</a-button></#if>
+      <a-button type="primary" @click="onAdd">新增</a-button>
     </a-space>
   </p>
   <a-table :dataSource="${domain}s"
@@ -12,7 +12,6 @@
            :loading="loading">
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'operation'">
-        <#if !readOnly>
         <a-space>
           <a-popconfirm
               title="删除后不可恢复，确认删除?"
@@ -22,7 +21,6 @@
           </a-popconfirm>
           <a @click="onEdit(record)">编辑</a>
         </a-space>
-        </#if>
       </template>
       <#list fieldList as field>
         <#if field.enums>
@@ -37,7 +35,6 @@
       </#list>
     </template>
   </a-table>
-  <#if !readOnly>
   <a-modal v-model:visible="visible" title="${tableNameCn}" @ok="handleOk"
            ok-text="确认" cancel-text="取消">
     <a-form :model="${domain}" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
@@ -66,7 +63,6 @@
       </#list>
     </a-form>
   </a-modal>
-  </#if>
 </template>
 
 <script>
@@ -106,15 +102,12 @@ export default defineComponent({
     },
       </#if>
     </#list>
-    <#if !readOnly>
     {
       title: '操作',
       dataIndex: 'operation'
     }
-    </#if>
     ];
 
-    <#if !readOnly>
     const onAdd = () => {
       ${domain}.value = {};
       visible.value = true;
@@ -155,7 +148,6 @@ export default defineComponent({
         }
       });
     };
-    </#if>
 
     const handleQuery = (param) => {
       if (!param) {
@@ -214,12 +206,10 @@ export default defineComponent({
       handleTableChange,
       handleQuery,
       loading,
-      <#if !readOnly>
       onAdd,
       handleOk,
       onEdit,
       onDelete
-      </#if>
     };
   },
 });
