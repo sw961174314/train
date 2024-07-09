@@ -1,44 +1,43 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-const routes = [
-  {
-    path: '/',
-    component: () => import('../views/main.vue'),
-    meta: {
-      loginRequire: true
-    },
+const routes = [{
+  path: '/',
+  component: () => import('../views/main.vue'),
+  children: [{
+    path: 'welcome',
+    component: () => import('../views/main/welcome.vue'),
+  }, {
+    path: 'about',
+    component: () => import('../views/main/about.vue'),
+  }, {
+    path: 'base/',
     children: [{
-      path: 'welcome',
-      component: () => import('../views/main/welcome.vue')
-    },{
-      path: 'about',
-      component: () => import('../views/main/about')
-    },{
       path: 'station',
-      component: () => import('../views/main/business/station')
-    },{
+      component: () => import('../views/main/base/station.vue'),
+    }, {
       path: 'train',
-      component: () => import('../views/main/business/train')
-    },{
+      component: () => import('../views/main/base/train.vue'),
+    }, {
       path: 'train-station',
-      component: () => import('../views/main/business/train-station')
-    },{
+      component: () => import('../views/main/base/train-station.vue'),
+    }, {
       path: 'train-carriage',
-      component: () => import('../views/main/business/train-carriage')
-    },{
+      component: () => import('../views/main/base/train-carriage.vue'),
+    }, {
       path: 'train-seat',
-      component: () => import('../views/main/business/train-seat')
-    },{
-      path: 'batch/job',
-      name: 'batch/job',
-      component: () => import('../views/main/batch/job')
+      component: () => import('../views/main/base/train-seat.vue'),
     }]
-  },
-  {
-    path: '',
-    redirect: '/welcome'
-  }
-]
+  }, {
+    path: 'batch/',
+    children: [{
+      path: 'job',
+      component: () => import('../views/main/batch/job.vue')
+    }]
+  }]
+}, {
+  path: '',
+  redirect: '/welcome'
+}];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
