@@ -11,6 +11,12 @@ public class TestJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        System.out.println("TestJob TEST");
+        System.out.println("TestJob TEST开始");
+         try {
+             Thread.sleep(3000);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+         }
+        System.out.println("TestJob TEST结束");
     }
 }
