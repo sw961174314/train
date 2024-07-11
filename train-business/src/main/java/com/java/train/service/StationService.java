@@ -67,7 +67,7 @@ public class StationService {
 
     public PageResp<StationQueryResp> queryList(StationQueryReq req) {
         StationExample stationExample = new StationExample();
-        stationExample.setOrderByClause("id desc");
+        stationExample.setOrderByClause("name_pinyin asc");
         StationExample.Criteria criteria = stationExample.createCriteria();
 
         LOG.info("查询页码：{}", req.getPage());
