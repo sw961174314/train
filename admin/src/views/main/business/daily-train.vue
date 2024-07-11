@@ -38,7 +38,7 @@
         <a-date-picker v-model:value="dailyTrain.date" valueFormat="YYYY-MM-DD" placeholder="请选择日期" />
       </a-form-item>
       <a-form-item label="车次编号">
-        <a-input v-model:value="dailyTrain.code" />
+        <train-select-view v-model="dailyTrain.code" @change="onChangeCode"></train-select-view>
       </a-form-item>
       <a-form-item label="车次类型">
         <a-select v-model:value="dailyTrain.type">
@@ -73,10 +73,12 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
+import TrainSelectView from "@/components/train-select.vue";
 
 export default defineComponent({
+  components: {TrainSelectView},
   name: "daily-train-view",
-  setup() {
+  setup: function () {
     const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
     const visible = ref(false);
     let dailyTrain = ref({
@@ -102,55 +104,55 @@ export default defineComponent({
     });
     let loading = ref(false);
     const columns = [
-    {
-      title: '日期',
-      dataIndex: 'date',
-      key: 'date',
-    },
-    {
-      title: '车次编号',
-      dataIndex: 'code',
-      key: 'code',
-    },
-    {
-      title: '车次类型',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: '始发站',
-      dataIndex: 'start',
-      key: 'start',
-    },
-    {
-      title: '始发站拼音',
-      dataIndex: 'startPinyin',
-      key: 'startPinyin',
-    },
-    {
-      title: '出发时间',
-      dataIndex: 'startTime',
-      key: 'startTime',
-    },
-    {
-      title: '终点站',
-      dataIndex: 'end',
-      key: 'end',
-    },
-    {
-      title: '终点站拼音',
-      dataIndex: 'endPinyin',
-      key: 'endPinyin',
-    },
-    {
-      title: '到站时间',
-      dataIndex: 'endTime',
-      key: 'endTime',
-    },
-    {
-      title: '操作',
-      dataIndex: 'operation'
-    }
+      {
+        title: '日期',
+        dataIndex: 'date',
+        key: 'date',
+      },
+      {
+        title: '车次编号',
+        dataIndex: 'code',
+        key: 'code',
+      },
+      {
+        title: '车次类型',
+        dataIndex: 'type',
+        key: 'type',
+      },
+      {
+        title: '始发站',
+        dataIndex: 'start',
+        key: 'start',
+      },
+      {
+        title: '始发站拼音',
+        dataIndex: 'startPinyin',
+        key: 'startPinyin',
+      },
+      {
+        title: '出发时间',
+        dataIndex: 'startTime',
+        key: 'startTime',
+      },
+      {
+        title: '终点站',
+        dataIndex: 'end',
+        key: 'end',
+      },
+      {
+        title: '终点站拼音',
+        dataIndex: 'endPinyin',
+        key: 'endPinyin',
+      },
+      {
+        title: '到站时间',
+        dataIndex: 'endTime',
+        key: 'endTime',
+      },
+      {
+        title: '操作',
+        dataIndex: 'operation'
+      }
     ];
 
     const onAdd = () => {
@@ -230,6 +232,14 @@ export default defineComponent({
       });
     };
 
+    const onChangeCode = (train) => {
+      console.log("车次下拉组件选择:", train);
+      let t = Tool.copy(train);
+      delete t.id;
+      // 用assign可以合并
+      dailyTrain.value = Object.assign(dailyTrain.value, t);
+    };
+
     onMounted(() => {
       handleQuery({
         page: 1,
@@ -250,7 +260,8 @@ export default defineComponent({
       onAdd,
       handleOk,
       onEdit,
-      onDelete
+      onDelete,
+      onChangeCode
     };
   },
 });
