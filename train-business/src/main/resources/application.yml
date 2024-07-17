@@ -4,6 +4,8 @@ server:
     context-path: /business
 
 spring:
+  application:
+    name: business
   datasource:
     url: jdbc:mysql://localhost/train-business?useU-enicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false&allowMultiQueries=true
     driver-class-name: com.mysql.cj.jdbc.Driver
