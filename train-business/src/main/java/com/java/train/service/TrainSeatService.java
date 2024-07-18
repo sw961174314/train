@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.java.train.domain.TrainCarriage;
+import com.java.train.domain.TrainCarriageExample;
 import com.java.train.enums.SeatColEnum;
 import com.java.train.resp.PageResp;
 import com.java.train.util.SnowUtil;
@@ -123,5 +124,14 @@ public class TrainSeatService {
                 }
             }
         }
+    }
+
+    public List<TrainSeat> selectByTrainCode(String trainCode) {
+        TrainSeatExample trainSeatExample = new TrainSeatExample();
+        trainSeatExample.setOrderByClause("`id` asc");
+        TrainSeatExample.Criteria criteria = trainSeatExample.createCriteria();
+        criteria.andTrainCodeEqualTo(trainCode);
+        List<TrainSeat> list = trainSeatMapper.selectByExample(trainSeatExample);
+        return list;
     }
 }

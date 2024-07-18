@@ -39,6 +39,9 @@ public class DailyTrainService {
     @Autowired
     private DailyTrainCarriageService dailyTrainCarriageService;
 
+    @Autowired
+    private DailyTrainSeatService dailyTrainSeatService;
+
     @Resource
     private DailyTrainMapper dailyTrainMapper;
 
@@ -128,6 +131,9 @@ public class DailyTrainService {
 
         // 生成该车次的车厢数据
         dailyTrainCarriageService.genDaily(date, train.getCode());
+
+        // 生成该车次的座位数据
+        dailyTrainSeatService.genDaily(date, train.getCode());
 
         LOG.info("生成日期【{}】车次的【{}】的车站信息结束", DateUtil.formatDate(date), train.getCode());
     }
