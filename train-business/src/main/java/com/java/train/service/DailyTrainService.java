@@ -3,6 +3,7 @@ package com.java.train.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -31,6 +32,9 @@ public class DailyTrainService {
 
     @Autowired
     private TrainService trainService;
+
+    @Autowired
+    private DailyTrainStationService dailyTrainStationService;
 
     @Resource
     private DailyTrainMapper dailyTrainMapper;
@@ -100,6 +104,8 @@ public class DailyTrainService {
     }
 
     public void genDailyTrain(Date date, Train train) {
+        LOG.info("生成日期【{}】车次的【{}】的信息开始", DateUtil.formatDate(date), train.getCode());
+
         // 删除该车次数据
         DailyTrainExample dailyTrainExample = new DailyTrainExample();
         dailyTrainExample.createCriteria().andDateEqualTo(date).andCodeEqualTo(train.getCode());
@@ -113,5 +119,10 @@ public class DailyTrainService {
         dailyTrain.setCreateTime(now);
         dailyTrain.setUpdateTime(now);
         dailyTrainMapper.insert(dailyTrain);
+
+        // 生成该车次的车站数据
+        dailyTrainStationService.genDaily(date, train.getCode());
+
+        LOG.info("生成日期【{}】车次的【{}】的车站信息结束", DateUtil.formatDate(date), train.getCode());
     }
 }
