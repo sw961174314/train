@@ -19,6 +19,9 @@ const routes = [
     },{
       path: 'passenger',
       component: () => import('../views/main/passenger')
+    },{
+      path: 'ticket',
+      component: () => import('../views/main/ticket')
     }]
   }
 ]
