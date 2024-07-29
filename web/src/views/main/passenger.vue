@@ -79,30 +79,30 @@ export default defineComponent({
     });
     let loading = ref(false);
     const columns = [
-    // {
-    //   title: '会员id1',
-    //   dataIndex: 'memberId',
-    //   key: 'memberId',
-    // },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '身份证',
-      dataIndex: 'idCard',
-      key: 'idCard',
-    },
-    {
-      title: '旅客类型',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: '操作',
-      dataIndex: 'operation'
-    }
+      {
+        title: '会员id',
+        dataIndex: 'memberId',
+        key: 'memberId',
+      },
+      {
+        title: '姓名',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: '身份证',
+        dataIndex: 'idCard',
+        key: 'idCard',
+      },
+      {
+        title: '旅客类型',
+        dataIndex: 'type',
+        key: 'type',
+      },
+      {
+        title: '操作',
+        dataIndex: 'operation'
+      }
     ];
 
     const onAdd = () => {
