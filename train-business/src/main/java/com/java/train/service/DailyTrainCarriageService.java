@@ -115,7 +115,19 @@ public class DailyTrainCarriageService {
             dailyTrainCarriage.setUpdateTime(now);
             dailyTrainCarriageMapper.insert(dailyTrainCarriage);
         }
-
         LOG.info("生成日期【{}】车次的【{}】的车厢信息结束", DateUtil.formatDate(date), trainCode);
+    }
+
+    /**
+     * 根据车厢类型查找座位
+     * @param date
+     * @param trainCode
+     * @param seatType
+     * @return
+     */
+    public List<DailyTrainCarriage> selectBySeatType(Date date, String trainCode, String seatType) {
+        DailyTrainCarriageExample example = new DailyTrainCarriageExample();
+        example.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode).andSeatTypeEqualTo(seatType);
+        return dailyTrainCarriageMapper.selectByExample(example);
     }
 }
