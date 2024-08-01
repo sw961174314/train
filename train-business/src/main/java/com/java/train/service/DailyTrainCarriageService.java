@@ -119,7 +119,7 @@ public class DailyTrainCarriageService {
     }
 
     /**
-     * 根据车厢类型查找座位
+     * 根据座位类型查找车厢
      * @param date
      * @param trainCode
      * @param seatType
