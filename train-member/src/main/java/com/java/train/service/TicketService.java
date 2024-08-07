@@ -2,7 +2,7 @@ package com.java.train.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.java.train.req.MemberTicketReq;
@@ -12,7 +12,6 @@ import com.java.train.domain.Ticket;
 import com.java.train.domain.TicketExample;
 import com.java.train.mapper.TicketMapper;
 import com.java.train.req.TicketQueryReq;
-import com.java.train.req.TicketSaveReq;
 import com.java.train.resp.TicketQueryResp;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -42,6 +41,9 @@ public class TicketService {
         TicketExample ticketExample = new TicketExample();
         ticketExample.setOrderByClause("id desc");
         TicketExample.Criteria criteria = ticketExample.createCriteria();
+        if (ObjUtil.isNotNull(req.getMemberId())) {
+            criteria.andMemberIdEqualTo(req.getMemberId());
+        }
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());
