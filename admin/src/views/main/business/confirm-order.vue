@@ -2,7 +2,7 @@
   <p>
     <a-space>
       <a-button type="primary" @click="handleQuery()">刷新</a-button>
-      
+
     </a-space>
   </p>
   <a-table :dataSource="confirmOrders"
@@ -56,46 +56,46 @@ export default defineComponent({
     });
     let loading = ref(false);
     const columns = [
-    {
-      title: '会员id',
-      dataIndex: 'memberId',
-      key: 'memberId',
-    },
-    {
-      title: '日期',
-      dataIndex: 'date',
-      key: 'date',
-    },
-    {
-      title: '车次编号',
-      dataIndex: 'trainCode',
-      key: 'trainCode',
-    },
-    {
-      title: '出发站',
-      dataIndex: 'start',
-      key: 'start',
-    },
-    {
-      title: '到达站',
-      dataIndex: 'end',
-      key: 'end',
-    },
-    {
-      title: '余票ID',
-      dataIndex: 'dailyTrainTicketId',
-      key: 'dailyTrainTicketId',
-    },
-    {
-      title: '车票',
-      dataIndex: 'tickets',
-      key: 'tickets',
-    },
-    {
-      title: '订单状态',
-      dataIndex: 'status',
-      key: 'status',
-    },
+      {
+        title: '会员id',
+        dataIndex: 'memberId',
+        key: 'memberId',
+      },
+      {
+        title: '日期',
+        dataIndex: 'date',
+        key: 'date',
+      },
+      {
+        title: '车次编号',
+        dataIndex: 'trainCode',
+        key: 'trainCode',
+      },
+      {
+        title: '出发站',
+        dataIndex: 'start',
+        key: 'start',
+      },
+      {
+        title: '到达站',
+        dataIndex: 'end',
+        key: 'end',
+      },
+      {
+        title: '余票ID',
+        dataIndex: 'dailyTrainTicketId',
+        key: 'dailyTrainTicketId',
+      },
+      {
+        title: '车票',
+        dataIndex: 'tickets',
+        key: 'tickets',
+      },
+      {
+        title: '订单状态',
+        dataIndex: 'status',
+        key: 'status',
+      },
     ];
 
 
