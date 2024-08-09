@@ -8,6 +8,8 @@ spring:
   cloud:
     nacos:
       config:
+        # 命名空间
+        namespace: train
         # nacos server地址
         server-addr: 127.0.0.1:8848
         # 配置中心文件后缀 默认properties
