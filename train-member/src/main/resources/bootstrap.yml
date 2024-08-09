@@ -1,0 +1,14 @@
+spring:
+  application:
+    # 注册中心的名字
+    name: member
+  profiles:
+    # 启动环境 nacos会根据环境读不同配置dataId:member-dev.yml
+    active: dev
+  cloud:
+    nacos:
+      config:
+        # nacos server地址
+        server-addr: 127.0.0.1:8848
+        # 配置中心文件后缀 默认properties
+        file-extension: yaml

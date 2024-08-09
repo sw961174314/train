@@ -4,8 +4,6 @@ server:
     context-path: /member
 
 spring:
-  application:
-    name: member
   datasource:
     url: jdbc:mysql://localhost/train-member?useU-enicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false&allowMultiQueries=true
     driver-class-name: com.mysql.cj.jdbc.Driver
