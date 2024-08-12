@@ -21,12 +21,32 @@ spring:
         server-addr: 127.0.0.1:8848
 
 seata:
-  # 事务组名称
+  # seata注册中心 要和seata server的application.yml配置保持一致
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace: train
+      username: nacos
+      password: nacos
+  # seata配置中心 要和seata server的application.yml配置保持一致
+  config:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace: train
+      username: nacos
+      password: nacos
+      data-id: seataServer.properties
+  # 事务组名称 必须在nacos中有配置过：service.vgroupMapping.train-group=default
   tx-service-group: train-group
-  service:
-    # 事务组和seata集群做关联
-    vgroup-mapping:
-      train-group: default
-    # seata集群对应的机器
-    grouplist:
-      default: 127.0.0.1:8091
+#  service:
+# 事务组和seata集群做关联
+#    vgroup-mapping:
+#      train-group: default
+# seata集群对应的机器
+#    grouplist:
+#      default: 127.0.0.1:8091
