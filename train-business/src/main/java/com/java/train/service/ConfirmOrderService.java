@@ -201,11 +201,9 @@ public class ConfirmOrderService {
                 LOG.error("保存购票信息失败", e);
                 throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_EXCEPTION);
             }
-
+        } finally {
             LOG.info("购票流程结束，释放锁！lockKey: {}", lockKey);
             redisTemplate.delete(lockKey);
-        } finally {
-
         }
     }
 
