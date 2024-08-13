@@ -42,7 +42,7 @@ seata:
       password: nacos
       data-id: seataServer.properties
   # 事务组名称 必须在nacos中有配置过：service.vgroupMapping.train-group=default
-  tx-service-group: train-group
+#  tx-service-group: train-group
 #  service:
 # 事务组和seata集群做关联
 #    vgroup-mapping:

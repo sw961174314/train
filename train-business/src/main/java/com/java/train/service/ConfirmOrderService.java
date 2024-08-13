@@ -106,20 +106,16 @@ public class ConfirmOrderService {
 
     public void doConfirm(ConfirmOrderDoReq req) {
         String lockKey = DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
+        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 1, TimeUnit.SECONDS);
+        if (setIfAbsent) {
+            LOG.info("恭喜，抢到锁了！lockKey：" + lockKey);
+        } else {
+            // 只是没抢到锁 并不知道票抢完了没 所以提示请稍后重试
+            LOG.info("很遗憾，没抢到锁！lockKey：" + lockKey);
+            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
+        }
 
-        RLock lock = null;
         try {
-            // 使用redission 自带看门狗
-            lock = redissonClient.getLock(lockKey);
-            // 带看门狗
-            boolean tryLock = lock.tryLock(0, TimeUnit.SECONDS);
-            if (tryLock) {
-                LOG.info("恭喜，抢到锁了！");
-            } else {
-                LOG.info("很遗憾，没抢到锁！");
-                throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
-            }
-
             DateTime now = DateTime.now();
             // 省略业务数据校验，如：车次是否存在，余票是否存在，车次是否在有效期内，tickets条数>0，同乘客同车次是否已买过
             Date date = req.getDate();
@@ -205,13 +201,11 @@ public class ConfirmOrderService {
                 LOG.error("保存购票信息失败", e);
                 throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_EXCEPTION);
             }
-        } catch (InterruptedException e) {
-            LOG.error("购票异常", e);
+
+            LOG.info("购票流程结束，释放锁！lockKey: {}", lockKey);
+            redisTemplate.delete(lockKey);
         } finally {
-            LOG.info("购票流程结束，释放锁！");
-            if (null != lock && lock.isHeldByCurrentThread()) {
-                lock.unlock();
-            }
+
         }
     }
 
