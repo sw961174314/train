@@ -111,4 +111,16 @@ public class DailyTrainStationService {
 
         LOG.info("生成日期【{}】车次的【{}】的车站信息结束", DateUtil.formatDate(date), trainCode);
     }
+
+    /**
+     * 查询列车的到站数
+     * @param trainCode
+     * @return
+     */
+    public long countByTrainCode(Date date, String trainCode) {
+        DailyTrainStationExample example = new DailyTrainStationExample();
+        example.createCriteria().andDateEqualTo(date).andTrainCodeEqualTo(trainCode);
+        long stationCount = dailyTrainStationMapper.countByExample(example);
+        return stationCount;
+    }
 }
