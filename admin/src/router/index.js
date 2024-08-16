@@ -64,6 +64,10 @@ const routes = [
           {
             path: 'confirm-order',
             component: () => import('@/views/main/business/confirm-order.vue')
+          },
+          {
+            path: 'sk-token',
+            component: () => import('@/views/main/business/sk-token.vue')
           }
         ]
       },
