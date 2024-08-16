@@ -19,3 +19,23 @@ spring:
         namespace: train
         # nacos 注册中心地址
         server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8080
+      datasource:
+        degrade:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            namespace: train
+            group-id: DEFAULT_GROUP
+            data-id: sentinel-batch-degrade
+            rule-type: degrade
+    # sentinel监控feign之后 启动会报注入失败 需要更改成懒加载
+    openfeign:
+      lazy-attributes-resolution: true
+
+# sentinel默认不监控feign 需要改成true
+feign:
+  sentinel:
+    enabled: true
