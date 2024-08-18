@@ -51,8 +51,8 @@ public class ConfirmOrderController {
                 redisTemplate.delete(imageCodeToken);
             }
         }
-        confirmOrderService.beforeDoConfirm(req);
-        return new CommonResp<>();
+        Long id = confirmOrderService.beforeDoConfirm(req);
+        return new CommonResp<>(String.valueOf(id));
     }
 
     /**

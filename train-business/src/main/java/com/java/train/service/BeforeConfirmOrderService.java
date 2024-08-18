@@ -41,7 +41,7 @@ public class BeforeConfirmOrderService {
     private ConfirmOrderMapper confirmOrderMapper;
 
     @SentinelResource(value = "doConfirm",blockHandler = "doConfirmBlock")
-    public void beforeDoConfirm(ConfirmOrderDoReq req) {
+    public Long beforeDoConfirm(ConfirmOrderDoReq req) {
         // 校验令牌余量
         boolean validSkToken = skTokenService.validSkToken(req.getDate(), req.getTrainCode(), LoginMemberContext.getId());
         if (validSkToken) {
@@ -80,6 +80,8 @@ public class BeforeConfirmOrderService {
         String reqJson = JSON.toJSONString(confirmOrderMQDto);
         // 异步
         confirmOrderService.doConfirm(confirmOrderMQDto);
+
+        return confirmOrder.getId();
     }
 
     /**
