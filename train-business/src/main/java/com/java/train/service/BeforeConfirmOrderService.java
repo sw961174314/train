@@ -7,6 +7,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.java.train.context.LoginMemberContext;
 import com.java.train.domain.ConfirmOrder;
+import com.java.train.dto.ConfirmOrderMQDto;
 import com.java.train.enums.ConfirmOrderStatusEnum;
 import com.java.train.enums.RedisKeyPreEnum;
 import com.java.train.exception.BusinessException;
@@ -18,13 +19,12 @@ import com.java.train.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class BeforeConfirmOrderService {
@@ -33,6 +33,9 @@ public class BeforeConfirmOrderService {
 
     @Autowired
     private SkTokenService skTokenService;
+
+    @Autowired
+    private ConfirmOrderService confirmOrderService;
 
     @Resource
     private ConfirmOrderMapper confirmOrderMapper;
@@ -64,11 +67,19 @@ public class BeforeConfirmOrderService {
         confirmOrder.setStart(start);
         confirmOrder.setEnd(end);
         confirmOrder.setDailyTrainTicketId(req.getDailyTrainTicketId());
-        confirmOrder.setStatus(ConfirmOrderStatusEnum.CANCEL.getCode());
+        confirmOrder.setStatus(ConfirmOrderStatusEnum.INIT.getCode());
         confirmOrder.setCreateTime(now);
         confirmOrder.setUpdateTime(now);
         confirmOrder.setTickets(JSON.toJSONString(tickets));
         confirmOrderMapper.insert(confirmOrder);
+
+        ConfirmOrderMQDto confirmOrderMQDto = new ConfirmOrderMQDto();
+        confirmOrderMQDto.setDate(req.getDate());
+        confirmOrderMQDto.setTrainCode(req.getTrainCode());
+        confirmOrderMQDto.setLogId(MDC.get("LOG_ID"));
+        String reqJson = JSON.toJSONString(confirmOrderMQDto);
+        // 异步
+        confirmOrderService.doConfirm(confirmOrderMQDto);
     }
 
     /**
