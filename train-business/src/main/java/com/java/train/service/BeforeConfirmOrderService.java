@@ -1,19 +1,29 @@
 package com.java.train.service;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.fastjson.JSON;
 import com.java.train.context.LoginMemberContext;
+import com.java.train.domain.ConfirmOrder;
+import com.java.train.enums.ConfirmOrderStatusEnum;
 import com.java.train.enums.RedisKeyPreEnum;
 import com.java.train.exception.BusinessException;
 import com.java.train.exception.BusinessExceptionEnum;
+import com.java.train.mapper.ConfirmOrderMapper;
 import com.java.train.req.ConfirmOrderDoReq;
+import com.java.train.req.ConfirmOrderTicketReq;
+import com.java.train.util.SnowUtil;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -24,8 +34,8 @@ public class BeforeConfirmOrderService {
     @Autowired
     private SkTokenService skTokenService;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    @Resource
+    private ConfirmOrderMapper confirmOrderMapper;
 
     @SentinelResource(value = "doConfirm",blockHandler = "doConfirmBlock")
     public void beforeDoConfirm(ConfirmOrderDoReq req) {
@@ -38,16 +48,27 @@ public class BeforeConfirmOrderService {
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
         }
 
-        // 获取车次锁
-        String lockKey = RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
-        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 1, TimeUnit.SECONDS);
-        if (setIfAbsent) {
-            LOG.info("恭喜，抢到锁了！lockKey：" + lockKey);
-        } else {
-            // 只是没抢到锁 并不知道票抢完了没 所以提示请稍后重试
-            LOG.info("很遗憾，没抢到锁！lockKey：" + lockKey);
-            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
-        }
+        DateTime now = DateTime.now();
+        // 省略业务数据校验，如：车次是否存在，余票是否存在，车次是否在有效期内，tickets条数>0，同乘客同车次是否已买过
+        Date date = req.getDate();
+        String trainCode = req.getTrainCode();
+        String start = req.getStart();
+        String end = req.getEnd();
+        List<ConfirmOrderTicketReq> tickets = req.getTickets();
+        // 保存确认订单表，状态初始
+        ConfirmOrder confirmOrder = new ConfirmOrder();
+        confirmOrder.setId(SnowUtil.getSnowflakeNextId());
+        confirmOrder.setMemberId(LoginMemberContext.getId());
+        confirmOrder.setDate(date);
+        confirmOrder.setTrainCode(trainCode);
+        confirmOrder.setStart(start);
+        confirmOrder.setEnd(end);
+        confirmOrder.setDailyTrainTicketId(req.getDailyTrainTicketId());
+        confirmOrder.setStatus(ConfirmOrderStatusEnum.CANCEL.getCode());
+        confirmOrder.setCreateTime(now);
+        confirmOrder.setUpdateTime(now);
+        confirmOrder.setTickets(JSON.toJSONString(tickets));
+        confirmOrderMapper.insert(confirmOrder);
     }
 
     /**
