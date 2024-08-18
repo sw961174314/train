@@ -174,6 +174,13 @@ public class ConfirmOrderService {
      * @return
      */
     private void sell(ConfirmOrder confirmOrder) {
+        // 为了演示排队效果，每次出票增加200毫秒延时
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         // 构造ConfirmOrderDoReq
         ConfirmOrderDoReq req = new ConfirmOrderDoReq();
         req.setMemberId(confirmOrder.getMemberId());
@@ -443,6 +450,45 @@ public class ConfirmOrderService {
 
             dailyTrainSeat.setSell(newSell);
             return true;
+        }
+    }
+
+    /**
+     * 查询列车出票的排名
+     * @param id
+     * @return
+     */
+    public Integer queryLineCount(Long id) {
+        ConfirmOrder confirmOrder = confirmOrderMapper.selectByPrimaryKey(id);
+        ConfirmOrderStatusEnum statusEnum = EnumUtil.getBy(ConfirmOrderStatusEnum::getCode, confirmOrder.getStatus());
+        int result = switch (statusEnum) {
+            // 排队
+            case PENDING -> 0;
+            // 成功
+            case SUCCESS -> -1;
+            // 失败
+            case FAILURE -> -2;
+            // 无票
+            case EMPTY -> -3;
+            // 取消
+            case CANCEL -> -4;
+            // 需要查表得到实际排队的数量
+            case INIT -> 999;
+        };
+        if (result == 999) {
+            // 排在第几位，下面的写法：where a=1 and (b=1 or c=1) 等价于 where (a=1 and b=1) or (a=1 and c=1)
+            ConfirmOrderExample confirmOrderExample = new ConfirmOrderExample();
+            confirmOrderExample.or().andDateEqualTo(confirmOrder.getDate())
+                    .andTrainCodeEqualTo(confirmOrder.getTrainCode())
+                    .andCreateTimeLessThan(confirmOrder.getCreateTime())
+                    .andStatusEqualTo(ConfirmOrderStatusEnum.INIT.getCode());
+            confirmOrderExample.or().andDateEqualTo(confirmOrder.getDate())
+                    .andTrainCodeEqualTo(confirmOrder.getTrainCode())
+                    .andCreateTimeLessThan(confirmOrder.getCreateTime())
+                    .andStatusEqualTo(ConfirmOrderStatusEnum.PENDING.getCode());
+            return Math.toIntExact(confirmOrderMapper.countByExample(confirmOrderExample));
+        } else {
+            return result;
         }
     }
 

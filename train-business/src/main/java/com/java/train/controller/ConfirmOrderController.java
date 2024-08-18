@@ -23,7 +23,10 @@ public class ConfirmOrderController {
     private static final Logger LOG = LoggerFactory.getLogger(ConfirmOrderService.class);
 
     @Autowired
-    private BeforeConfirmOrderService confirmOrderService;
+    private ConfirmOrderService confirmOrderService;
+
+    @Autowired
+    private BeforeConfirmOrderService beforeConfirmOrderService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -51,8 +54,19 @@ public class ConfirmOrderController {
                 redisTemplate.delete(imageCodeToken);
             }
         }
-        Long id = confirmOrderService.beforeDoConfirm(req);
+        Long id = beforeConfirmOrderService.beforeDoConfirm(req);
         return new CommonResp<>(String.valueOf(id));
+    }
+
+    /**
+     * 查询列车出票的排名
+     * @param id
+     * @return
+     */
+    @GetMapping("/query-line-count/{id}")
+    public CommonResp<Integer> queryLineCount(@PathVariable Long id) {
+        Integer count = confirmOrderService.queryLineCount(id);
+        return new CommonResp<>(count);
     }
 
     /**
